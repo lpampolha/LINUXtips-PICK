@@ -58,3 +58,7 @@ Testando a imagem
 
 -Verificando se a imagem é segura
 #cosign verify --key cosign.pub lpampolha/linuxtips-giropops-senhas:6.0
+
+Com a imagem criada, sem vulnerabilidades e assinada, vamos ao Kubernetes
+
+4 - 
