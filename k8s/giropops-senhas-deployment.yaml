@@ -18,14 +18,19 @@ spec:
       containers:
       - image: lpampolha/linuxtips-giropops-senhas:6.0
         name: giropops-senhas
+        env:
+        - name: REDIS_HOST
+          value: redis-service
         ports:
         - containerPort: 5000
         resources:
           limits:
-            memory: 128Mi
-            cpu: 0.3
-          requests:
             memory: 64Mi
+            cpu: 0.2
+          requests:
+            memory: 16Mi
             cpu: 0.1
+      imagePullSecrets:
+      - name: docker-hub-secret
       dnsPolicy: ClusterFirst
       restartPolicy: Always
