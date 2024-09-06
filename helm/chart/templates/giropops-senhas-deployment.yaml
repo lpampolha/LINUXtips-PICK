@@ -1,0 +1,41 @@
+{{- range $component, $config := .Values.deployments }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $component  }}
+  labels:
+    app: {{ $config.labels.app  }}
+spec:
+  replicas: {{ $config.replicas }}
+  selector:
+    matchLabels:
+      app: {{ $config.labels.app  }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{ $config.labels.app  }}
+    spec:
+      containers:
+      - name: {{ $component }}
+        image: {{ $config.image }}
+        ports:
+        {{- range $config.ports }}  
+        - containerPort: {{ .port }}
+        {{- end }}
+        env:
+        - name: REDIS_HOST
+          value: redis-service
+        resources:
+          limits:
+            memory: {{ $config.resources.limits.memory }}
+            cpu: {{ $config.resources.limits.cpu }}
+          requests:
+            memory: {{ $config.resources.requests.memory }}
+            cpu: {{ $config.resources.requests.cpu }}
+      imagePullSecrets:
+      - name: docker-hub-secret
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+---
+{{- end }}

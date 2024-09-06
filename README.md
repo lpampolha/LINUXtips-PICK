@@ -1,5 +1,21 @@
 # LINUXtips-PICK
 
+### Ferramentas e Tecnologias Utilizadas
+
+- Python: Linguagem de programação principal.
+- Flask: Framework web utilizado para construir a aplicação.
+- Redis: Banco de dados em memória utilizado para armazenamento de dados.
+- Docker: Utilizado para containerização da aplicação.
+- GitHub Actions: Utilizado para integração contínua e automação de tarefas.
+- Cosign: Utilizado para assinatura e verificação de imagens de contêiner.
+- Kyverno: Utilizado para políticas de segurança no Kubernetes.
+- Kubernetes: Utilizado para orquestração de contêineres em produção.
+- Prometheus: Utilizado para monitoramento e alertas.
+- APKO: Utilizado para construção de imagens de contêiner.
+- Melange: Utilizado para construção de pacotes.
+- Helm: Utilizado para gerenciamento de pacotes Kubernetes.Ferramentas e Tecnologias Utilizadas
+GitHub Actions Redis Flask Python YAML AquaSec Docker Kubernetes Prometheus
+
 Nessa primeira fase, o foco é na construção de uma imagem distroless, com somente a aplicação, e fazendo o apontamento para um segundo container, sendo esse da base, através de uma variável de ambiente.
 
 Os passos são os seguintes:
@@ -71,6 +87,9 @@ Primeiro vamos testar os manifestos da aplicação e do Redis.  Os arquivos est�
 #k apply -f redis-deployment.yaml
 #k apply -f redis-service.yaml
 
+![alt text](./images/image-2.png)
+![alt text](./images/image-3.png)
+
 ### Secrets
 
 Agora vamos criar um secret para autenticar no Docker Hub, a fim de acessar imagens privadas.  Para isso devemos codificar o conteúdo do arquivo ~/.docker/config.json, com o sequinte comando: <br />
@@ -133,3 +152,34 @@ Agora sim vamos ao nosso Ingress
 #k apply -f k8s/ingress.yaml
 
 Funcionando
+
+![alt text](./images/ingress2.png)
+![alt text](./images/ingress.png)
+
+## 5 - Helm
+
+O Helm é um gerenciador de pacotes para Kubernetes que facilita a definição, instalação e atualização de aplicações complexas no Kubernetes.
+
+#### Instalando o Helm
+
+#curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+#chmod 700 get_helm.sh
+#./get_helm.sh
+
+#### Criando o primeiro Chart
+
+#mkdir -p helm/chart
+#cd helm/chart
+#vim Chart.yaml
+
+Após isso, vamos criar o diretório templates, e adicionar os manifestos do K8s nele.
+
+#mkdir templates
+#cp ../../k8s/* templates
+
+Agora criaremos o values.yaml
+
+#vim values.yaml
+
+Crie um novo diretório chamado charts
+

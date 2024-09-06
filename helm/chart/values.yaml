@@ -1,0 +1,69 @@
+deployments:
+  giropops-senhas:
+    name: "giropops-senhas-helm"
+    image: "lpampolha/linuxtips-giropops-senhas:6.0"
+    replicas: "1"
+    ports: 
+    labels:
+      app: "giropops-senhas"
+    resources: 
+      limits:
+        memory: "64Mi"
+        cpu: 0.2
+      requests:
+        memory: "16Mi"
+        cpu: 0.1
+    imagePullSecrets:
+      name: docker-hub-secret
+    dnsPolicy: ClusterFirst
+    restartPolicy: Always
+
+  redis:
+    name: "redis-service"
+    image: "redis"
+    replicas: "1"
+    port: 6379
+    labels:
+      app: "redis"
+    resources: 
+      limits:
+        memory: "16Mi"
+        cpu: 0.1
+      requests:
+        memory: "8Mi"
+        cpu: 0.05
+    dnsPolicy: ClusterFirst
+    restartPolicy: Always
+
+services:
+  giropops-senhas:
+    ports:
+      - port: 5000
+        protocol: TCP
+        targetPorts: 5000
+        name: "app"
+        serviceType: "NodePort"
+        NodePort: 32500
+      - port: 8088
+        targetPort: 8088
+        name: "metrics"
+        serviceType: "ClusterIP"
+    labels:
+      app: "giropops-senhas"
+
+  redis:
+    ports:
+    - port: 6379
+      protocol: TCP
+      targetPorts: 6379
+      name: "service"
+      serviceType: "ClusterIP"
+    labels:
+      app: "redis"
+
+ingress:
+  endpoint:
+    name: "giropops-senhas"
+    ports:
+      port: 5000
+    app: "app"

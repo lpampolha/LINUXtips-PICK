@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  APP_IMAGE: lpampolha/linuxtips-giropops-senhas:6.0
+  APP_NAME: giropops-senhas
+kind: ConfigMap
+metadata:
+  name: configmap-giropops-senhas
