@@ -1,7 +1,12 @@
+{{- range $component, $config := .Values.configmaps }}
+  {{- range $cmap := $config.data }}
 apiVersion: v1
 data:
-  APP_IMAGE: lpampolha/linuxtips-giropops-senhas:6.0
-  APP_NAME: giropops-senhas
+  APP_IMAGE: {{ $cmap.image }}
+  APP_NAME: {{ $cmap.name }}
 kind: ConfigMap
 metadata:
-  name: configmap-giropops-senhas
+  name: configmap-{{ $cmap.name }}
+---
+  {{- end }}
+{{- end }}

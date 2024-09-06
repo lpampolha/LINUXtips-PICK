@@ -50,6 +50,8 @@ services:
         serviceType: "ClusterIP"
     labels:
       app: "giropops-senhas"
+    configmap:
+      name: "configmap-giropops-senhas"
 
   redis:
     ports:
@@ -62,8 +64,16 @@ services:
       app: "redis"
 
 ingress:
-  endpoint:
-    name: "giropops-senhas"
-    ports:
-      port: 5000
-    app: "app"
+  giropops-senhas:
+    endpoint:
+    - name: "giropops-senhas"
+      ports:
+        port: 5000
+      app: "app"
+      route: /
+
+configmaps:
+  giropopos-senhas:
+    data:
+    - image: "lpampolha/linuxtips.giropops-senhas:6.0"
+      name: "giropops-senhas"

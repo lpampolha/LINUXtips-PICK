@@ -1,17 +1,22 @@
+{{- range $component, $config := .Values.ingress }}
+  {{- range $svc := $config.endpoint }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: giropops-senhas
+  name: {{ $component }}
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: {{ $svc.route }}
 spec:
   rules:
   - http:
       paths:
-      - path: /
+      - path: {{ $svc.route }}
         pathType: Prefix
         backend:
           service:
-            name: giropops-senhas-app
+            name: {{ $component  }}-app
             port:
-              number: 5000
+              number: {{ $svc.ports.port }}
+---
+  {{- end }}
+{{- end }}
